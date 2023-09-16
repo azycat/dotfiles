@@ -1,0 +1,92 @@
+#!/usr/bin/env sh
+
+# the scripting-addition must be loaded manually if
+# you are running yabai on macOS Big Sur. Uncomment
+# the following line to have the injection performed
+# when the config is executed during startup.
+#
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+#
+# see this wiki page for information:
+#  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
+#
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+
+# S K E T C H Y B A R  E V E N T S
+yabai -m signal --add event=window_focused action="sketchybar -m --trigger window_focus &> /dev/null"
+yabai -m signal --add event=window_title_changed action="sketchybar -m --trigger title_change &> /dev/null"
+
+# global settings
+# yabai -m config mouse_follows_focus          off
+# yabai -m config focus_follows_mouse          autofocus
+yabai -m config window_placement             second_child
+yabai -m config window_topmost               off 
+yabai -m config window_shadow                float
+yabai -m config window_opacity               off
+yabai -m config window_opacity_duration      0.0
+yabai -m config active_window_opacity        1.0
+yabai -m config normal_window_opacity        0.90
+yabai -m config window_border                off
+yabai -m config window_border_width          4
+yabai -m config active_window_border_color   0xff775759
+yabai -m config normal_window_border_color   0xff555555
+yabai -m config insert_feedback_color        0xffd75f5f
+yabai -m config split_ratio                  0.50
+yabai -m config auto_balance                 on # off
+yabai -m config mouse_modifier               fn
+yabai -m config mouse_action1                move
+yabai -m config mouse_action2                resize
+yabai -m config mouse_drop_action            swap
+
+# general space settings. default 12,12,12,12,06
+yabai -m config layout                       bsp # stack
+yabai -m config top_padding                  25
+yabai -m config bottom_padding               25
+yabai -m config left_padding                 25
+yabai -m config right_padding                25
+yabai -m config window_gap                   20
+yabai -m config external_bar                 all:28:0
+
+# mission-control desktop labels
+yabai -m space 1 --label home
+yabai -m space 2 --label study
+yabai -m space 3 --label code
+yabai -m space 4 --label media
+yabai -m space 5 --label social
+
+# yabai -m rule --add app="^Firefox$" space=web
+yabai -m rule --add app="^Visual Studio Code$" space=code
+yabai -m rule --add app="^Discord$" space=social
+yabai -m rule --add app="^CLIP STUDIO PAINT$" space=media layer=above manage=off
+yabai -m rule --add app="^CLIP STUDIO$" space=media layer=above manage=off
+yabai -m rule --add app="^Transmission$" space=media
+yabai -m rule --add app="^Spotify$" space=media manage=on
+yabai -m rule --add app="^Obsidian$" space=study
+yabai -m rule --add app="^Anki$" space=study manage=off
+
+
+echo "yabai configuration loaded.. :3"
+
+# ignore stickies
+yabai -m rule --add app="Stickies" manage=off
+yabai -m rule --add app="Reminders" manage=off
+yabai -m rule --add app="Messenger" manage=off
+yabai -m rule --add app="Calculator" manage=off
+yabai -m rule --add app="Bitwarden" manage=off
+yabai -m rule --add app="Toggl Track" manage=off
+yabai -m rule --add app="^Unity$" manage=off
+yabai -m rule --add app="^Unity Hub$" manage=off
+yabai -m rule --add app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+yabai -m rule --add app="^Anki$" title="^(Browse)$" manage=off
+yabai -m rule --add app="^Spotlight$" layer=above manage=off
+yabai -m rule --add app="^System Preferences$" layer=above manage=off 
+yabai -m rule --add app="^Font Book$" layer=above manage=off
+yabai -m rule --add app="^Installer$" layer=above manage=off
+yabai -m rule --add app="^Flux$" layer=above manage=off
+yabai -m rule --add label="Firefox PIP" app="^Firefox$" title="^(Picture-in-Picture)$" manage=off
+yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on layer=above manage=off
