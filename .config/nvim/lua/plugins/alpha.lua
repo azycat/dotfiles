@@ -38,10 +38,12 @@ return {
       dashboard.button(
         "o",
         " " .. " orgsmode",
-        ":e ~/Documents/vault/org/refile.org <bar>" .. [[:lua require("orgmode.agenda"):agenda() <cr>]]
+        ":e ~/Documents/vault/org/refile.org <cr>"
+        -- .. [[:lua require("orgmode.agenda"):agenda()]]
+        -- .. "<cr><cmd>wincmd k<cr>"
       ),
       -- dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
-      dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+      -- dashboard.button("q", " " .. " Quit", ":qa<CR>"),
     }
   end,
 }

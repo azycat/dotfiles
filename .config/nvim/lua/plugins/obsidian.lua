@@ -1,6 +1,5 @@
-local path = "~/Library/Mobile Documents/com~apple~CloudDocs/struppi-city"
+local citypath = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/struppi-city"
 local sympath = "~/Documents/vault/struppi-city"
--- local notebook = "~/Library/Mobile Documents/com~apple~CloudDocs/notebook"
 local notebook = "~/Documents/vault/notebook"
 
 return {
@@ -11,10 +10,10 @@ return {
     -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
     -- STRUPPI CITY
     "BufReadPre "
-      .. vim.fn.expand(path)
+      .. vim.fn.expand(citypath)
       .. "/**/*.md",
-    "BufNewFile " .. vim.fn.expand(path) .. "/**/*.md",
-    "BufNewFile " .. vim.fn.expand(path) .. "/**.md",
+    "BufNewFile " .. vim.fn.expand(citypath) .. "/**/*.md",
+    "BufNewFile " .. vim.fn.expand(citypath) .. "/**.md",
     -- NOTEBOOK
     "BufReadPre "
       .. vim.fn.expand(notebook)
@@ -44,34 +43,50 @@ return {
       desc = "Insert a template.",
     },
     {
+      "<leader>vit",
+      -- { t = { "<cmd>pu='[" .. tostring(os.date("%T")) .. "]'<cr>", "Current Time" } },
+      "<cmd>pu="
+        -- .. tostring(os.date("%I:%m %p"))
+        .. "strftime('<%I:%m %p>')"
+        .. "<cr>",
+
+      desc = "Insert time.",
+    },
+    {
+      "<leader>vid",
+      "<cmd>pu=strftime('<%Y-%m-%d>') <cr>",
+      desc = "Insert date.",
+    },
+
+    {
       "<leader>von",
-      ":e " .. vim.fn.expand(notebook) .. "<cr>",
+      ":Oil --float " .. vim.fn.expand(notebook) .. "<cr>",
       desc = "Open Notebook.",
     },
 
     {
       "<leader>vo1",
-      ":e " .. sympath .. "/01 encounters <cr>",
+      ":Oil --float " .. sympath .. "/01\\ encounters <cr>",
       desc = "Open encounters.",
     },
     {
       "<leader>vo2",
-      ":e " .. sympath .. "/02 notes <cr>",
+      ":Oil --float " .. sympath .. "/02\\ notes <cr>",
       desc = "Open notes.",
     },
     {
       "<leader>vo3",
-      ":e " .. sympath .. "/03 maps <cr>",
+      ":Oil --float " .. sympath .. "/03\\ maps <cr>",
       desc = "Open maps.",
     },
     {
       "<leader>vo4",
-      ":e " .. sympath .. "/04 diary <cr>",
+      ":Oil --float " .. sympath .. "/04\\ diary <cr>",
       desc = "Open diary.",
     },
     {
       "<leader>vo5",
-      ":e " .. sympath .. "/05 braindump <cr>",
+      ":Oil --float " .. sympath .. "/05\\ braindump <cr>",
       desc = "Open braindump.",
     },
   },
@@ -82,7 +97,7 @@ return {
     -- see below for full list of optional dependencies 👇
   },
   opts = {
-    dir = "~/Library/Mobile Documents/com~apple~CloudDocs/struppi-city", -- no need to call 'vim.fn.expand' here
+    dir = "~/Documents/vault/struppi-city", -- no need to call 'vim.fn.expand' here
     mappings = {
       -- ["gf"] = require("obsidian.mapping").gf_passthrough(),
     },
@@ -111,22 +126,5 @@ return {
       end
       return out
     end,
-
-    -- note_id_func = function(title)
-    --   -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
-    --   -- In this case a note with the title 'My new note' will given an ID that looks
-    --   -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
-    --   local suffix = ""
-    --   if title ~= nil then
-    --     -- If title is given, transform it into valid file name.
-    --     suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-    --   else
-    --     -- If title is nil, just add 4 random uppercase letters to the suffix.
-    --     for _ = 1, 4 do
-    --       suffix = suffix .. string.char(math.random(65, 90))
-    --     end
-    --   end
-    --   return tostring(os.time()) .. "-" .. suffix
-    -- end,
   },
 }

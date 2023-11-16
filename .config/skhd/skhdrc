@@ -296,6 +296,9 @@ alt - p : yabai -m window --toggle sticky;\
 ctrl + alt - a : yabai -m space --layout bsp
 ctrl + alt - d : yabai -m space --layout float
 
+# toggle tiled mode (used to force Applications (Books, etc) into tiled mode)
+alt + cmd + ctrl - f : yabai -m window --toggle float 
+
 # experimental: make window gaps 20pt on space 2 -> breaks skhd for some reason
 # yabai -m config --space 2 window_gap 0
 
