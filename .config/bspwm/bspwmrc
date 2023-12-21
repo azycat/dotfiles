@@ -1,0 +1,24 @@
+#! /bin/sh
+
+# Start applications from ~/.local/bin/autostart
+~/.local/bin/autostart &
+
+# bswpm settings
+# bspc monitor -d I II III IV V VI VII VIII IX X
+bspc monitor -d home: cat: room: diary: heaven: zero:
+
+bspc config border_width         1
+bspc config window_gap          12
+# bspc rule -a \* rectangle 640x360+0+0 center=true
+bspc rule -a \* rectangle center=true
+bspc rule -a kitty:floating state=floating
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      false
+
+bspc rule -a Zathura state=tiled
+
+# default apps
+bspc rule -a pidgin desktop="^6"
+bspc rule -a struppi-city desktop="^4"
