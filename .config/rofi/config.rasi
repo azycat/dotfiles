@@ -1,0 +1,16 @@
+configuration {
+	modi: "window,drun,calc";
+	font: "DejaVu Sans Mono 9";
+	combi-modi: "window,drun,ssh";
+	
+	kb-row-up:		"Up,k,Shift+Tab,Shift+ISO_Left_Tab";
+	kb-row-down:		"Down,j";
+	kb-accept-entry:	"Control+m,Return,KP_Enter";
+	terminal:		"kitty";
+	kb-remove-to-eol:	"Control+Shift+e";
+	kb-mode-next:		"Shift+Right,Control+Tab,Control+l";
+	kb-mode-previous:	"Shift+Left,Control+Shift+Tab,Control+h";
+	kb-mode-complete:	"Shift+Control+l";
+	kb-remove-char-back:	"BackSpace";
+}
+@theme "/usr/share/rofi/themes/DarkBlue.rasi"
