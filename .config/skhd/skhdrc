@@ -61,6 +61,9 @@ cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance ~
 # Kill terminal.
 cmd + shift - q : /usr/bin/pkill -9 -afi kitty
 
+# open messenger
+cmd + shift - 0 : open -a 'Messenger'
+
 # open reminders
 cmd + shift - r : open -a 'Reminders' .
 
@@ -241,6 +244,7 @@ alt + cmd + ctrl - f : yabai -m window --toggle float
 
 # cycle through all windows sorted by: coordinates -> space index -> display index
 lalt - tab : yabai -m window --focus "$(yabai -m query --windows | jq -re "sort_by(.display, .space, .frame.x, .frame.y, .id) | map(select(.\"is-visible\" == true and .role != \"AXUnknown\")) | reverse | nth(index(map(select(.\"has-focus\" == true))) - 1).id")"
+lalt + shift - tab : yabai -m window --focus "$(yabai -m query --windows | jq -re "sort_by(.display, .space, .frame.x, .frame.y, .id) | reverse | map(select(.\"is-visible\" == true and .role != \"AXUnknown\")) | reverse | nth(index(map(select(.\"has-focus\" == true))) - 1).id")"
 
 # cycle through all visible windows sorted by: coordinates -> display index
 # yabai -m window --focus "$(yabai -m query --windows | jq -re "sort_by(.display, .frame.x, .frame.y, .id) | map(select(.\"is-visible\" == true and .role != \"AXUnknown\")) | reverse | nth(index(map(select(.\"has-focus\" == true))) - 1).id")"
@@ -267,6 +271,14 @@ ctrl - escape : WINDOW_TITLE="ddterm";                                          
                   if [ "$DISTANCE" -gt 0 ]; then                                                                            \
                     yabai -m window "$WINDOW_ID" --move abs:0:-"$DISTANCE" --layer below --focus mouse;                     \
                   else                                                                                                      \
-                    yabai -m window "$WINDOW_ID" --space mouse --move abs:0:0 --grid "5:5:4:0:1:1" --layer above --focus;  \
+                    yabai -m window "$WINDOW_ID" --space mouse --move abs:0:0 --grid "5:5:1:1:1:1" --layer above --focus;  \
                   fi;                                                                                                       \
                 fi;                                                                                                         \
+
+# debug
+alt + ctrl - i : json_text=$(yabai -m query --windows --window mouse | jq -r tostring | tr -d '{}"' | tr ',' '\n') ; \
+                 appName=$(echo "$json_text" | sed -n 's/^app:\(.*\)/\1/p') ; \
+                 result=$(osascript -e "display dialog \"$json_text\" buttons {\"Close\", \"manageOff\"} default button \"Close\"") ; \
+                 echo "$result" | grep -q "manageOff" && \
+                 perl -i -pe "s/manageOffApp\=\'\^\(/manageOffApp\=\'\^\($appName\|/g" ~/.config/yabai/yabairc && \
+                 yabai --restart-service

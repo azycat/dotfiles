@@ -53,15 +53,8 @@ yabai -m space 3 --label code
 yabai -m space 4 --label media
 yabai -m space 5 --label social
 
-# yabai -m rule --add app="^Firefox$" space=web
-# yabai -m rule --add app="^Visual Studio Code$" space=code
-# yabai -m rule --add app="^Discord$" space=social
 yabai -m rule --add app="^CLIP STUDIO PAINT$" layer=above manage=off
 yabai -m rule --add app="^CLIP STUDIO$" layer=above manage=off
-# yabai -m rule --add app="^Transmission$" space=media
-# yabai -m rule --add app="^Spotify$" space=media manage=on
-# yabai -m rule --add app="^Obsidian$" space=study
-# yabai -m rule --add app="^Anki$" space=study manage=off
 
 echo "yabai configuration loaded.. :3"
 
@@ -77,15 +70,26 @@ yabai -m rule --add app="^Unity Hub$" manage=off
 yabai -m rule --add app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 # yabai -m rule --add app="^Anki$" title="^(Browse)$" manage=off
 yabai -m rule --add app="^Spotlight$" layer=above manage=off
-yabai -m rule --add app="^System Preferences$" layer=above manage=off
 yabai -m rule --add app="^Font Book$" layer=above manage=off
 yabai -m rule --add app="^Installer$" layer=above manage=off
 yabai -m rule --add app="^Flux$" layer=above manage=off
 yabai -m rule --add label="Firefox PIP" app="^Firefox$" title="^(Picture-in-Picture)$" manage=off
 yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on layer=above manage=off
 
-yabai -m rule --add app="^Books$" space=media manage=on
+yabai -m rule --add app="^Books$" manage=on
 
 # dropdown terminal (aka "Quake mode")
-yabai -m rule --add title="ddterm" manage=off grid="5:5:4:0:1:1"
+yabai -m rule --add title="ddterm" manage=off grid="5:5:2:2:1:1"
 
+# unmanaged apps
+systemApp='^(System Settings|System Information|Calendar|Mail|App Store|Activity Monitor|Dictionary)$'
+
+manageOffApp='^(IINA|Stats|LICEcap)$'
+
+yabai -m rule --add app="${systemApp}|${manageOffApp}" manage=off
+
+yabai -m signal --add event=window_created \
+  action='yabai -m query --windows --window $YABAI_WINDOW_ID \
+  | jq -er ".\"can-resize\" or .\"is-floating\"" || \
+  yabai -m window $YABAI_WINDOW_ID --toggle float' \
+  app!="${systemApp}|${manageOffApp}"
