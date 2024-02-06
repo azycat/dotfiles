@@ -59,6 +59,8 @@ mark h ~/
 mark d ~/Downloads/
 mark c ~/.config/
 mark 5 ~/53chan/
+mark s ~/53chan/screenies/
+mark n ~/53chan/notebook
 
 " ------------------------------------------------------------------------------
 " Commands
@@ -87,6 +89,15 @@ command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart full
+
+" archives to %a.zip if %a is provided. otherwise, chooses filename automatically
+" command! zip if [ -n "%a" ]; then
+"            \     zip -r '%a.zip' %f;
+"            \ elseif [ "%c" = "%f" ]; then
+"            \     zip -r %c.zip %c;
+"            \ else
+"            \     zip -r %d:t.zip %f;
+"            \ fi
 
 " zoxide support
 command! zoxide :set noquickview | :execute 'cd' fnameescape(system('zoxide query -l "%a" | fzf --height 20 2>/dev/tty')) '%IU' | redraw
@@ -493,6 +504,9 @@ nnoremap <c-y> <c-w>x
 
 " enter to open directories in the next pane
 nnoremap <cr> :if filetype('.') == "dir"|exe 'sync %c'|else|exe 'norm! l'|endif<CR>
+
+" fast quit
+nnoremap q :quit<cr>
 
 " ------------------------------------------------------------------------------
 " Various customization examples
