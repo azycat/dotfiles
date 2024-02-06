@@ -1,23 +1,12 @@
 # `$HOME`
 azycat's home
 
-built with neovim, zsh, skhd
+built with neovim, zsh, skhd, and yadm
 
 ##  how2install
 
-`git clone --separate-git-dir=$HOME/.dotfiles https://github.com/azycat/dotfiles.git dotfiles-tmp`
+install yadm
 
-- linux/macos (zsh)
+then yadm clone (repo url)
 
-```
-rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
-rm -rf dotfiles-tmp
-echo alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' >> $HOME/.zsh
-```
-
-- windows
-
-```
-Copy-Item -Path "$HOME\dotfiles-tmp\*" -Destination "$HOME/" -Recurse -Exclude ".git"
-Remove-Item -Force -Recurse -Path "$HOME\dotfiles-tmp\"
-```
+it's as shrimple as that
