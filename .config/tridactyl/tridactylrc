@@ -21,9 +21,10 @@
 colours dark
 
 " set newtab about:blank
-set editorcmd /usr/local/bin/kitty -1 vim %f
+set editorcmd /usr/local/bin/kitty --title "ddterm" -- vim %f '+normal!%lGzv%c|'
 set smoothscroll false
-set newtabfocus page
+set allowautofocus false
+" set newtabfocus page
 
 set hintfiltermode vimperator-reflow
 set hintuppercase false
@@ -67,8 +68,8 @@ bindurl ^https://github.com gi hint -Vc .AppHeader-searchButton
  
 
 " Handy multiwindow/multitasking binds
-bind gd tabdetach
-bind gD composite tabduplicate; tabdetach
+bind td tabdetach
+bind tD composite tabduplicate; tabdetach
  
 " " Stupid workaround to let hint -; be used with composite which steals semi-colons
 " command hint_focus hint -;
@@ -86,6 +87,9 @@ command discardall jsb browser.tabs.query({}).then(ts => browser.tabs.discard(ts
 "" My binds
 
 "bind ` tabsort --url
+
+unbind t
+unbind T
 
 bind j scrollline 2
 bind k scrollline -1.5
@@ -115,9 +119,10 @@ unbind --mode=ex <C-c>
 bind <space>h hint -F e => e.dispatchEvent(new MouseEvent('mouseover', {}))
 " Protonmail hints
 bindurl https://mail.protonmail.com/ f hint -Jc .item-subject,.item-checkbox,.navigation-link,.toolbar-button
-autocmd DocStart .*github\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
-autocmd DocStart .*gitlab\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
-autocmd DocStart .*archlinux\.org.* zoom 150 false TRI_FIRED_MOZ_TABID
+
+" autocmd DocStart .*github\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
+" autocmd DocStart .*gitlab\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
+" autocmd DocStart .*archlinux\.org.* zoom 150 false TRI_FIRED_MOZ_TABID
 
 setpref browser.pocket.enabled false
 setpref extensions.pocket.enabled false
