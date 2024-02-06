@@ -1,0 +1,66 @@
+# config files
+alias sxhkdrc='vim ~/.config/sxhkd/sxhkdrc'
+alias bspwmrc='vim ~/.config/bspwm/bspwmrc'
+alias zconfig='vim ~/.config/zsh/.zshrc'
+alias zshrc='vim ~/.config/zsh/.zshrc'
+alias zalias='vim ~/.config/zsh/.zsh_aliases'
+alias zsource='source ~/.config/zsh/.zshrc;echo "zshrc sourced."'
+alias kittyconf="nvim ~/.config/kitty/kitty.conf"
+alias bashrc='vim ~/.bashrc'
+alias doc='vim ~/arch.md'
+alias vimrc='vim ~/.vimrc'
+alias qbconf='vim ${XDG_CONFIG_HOME}/qutebrowser/config.py'
+
+# utility
+alias icat='kitty +kitten icat'
+alias less="/usr/share/vim/vim90/macros/less.sh"
+alias swapcaps="setxkbmap -option ctrl:swapcaps"
+alias dotgit='/usr/bin/git --git-dir=$HOME/.dotgit/ --work-tree=$HOME'
+alias yl='lazygit --use-config-file "$HOME/.config/yadm/lazygit.yml,$HOME/.config/lazygit/config.yml" --work-tree ~ --git-dir ~/.local/share/yadm/repo.git'
+
+# convenience
+alias pls='sudo $(fc -ln -l)'
+alias pbcopy="xclip -selection clipboard"
+alias copylast='fc -ln -1 | awk '{$1=$1}1' | pbcopy '
+alias gomi='trash-put'
+alias :q='exit'
+alias ll="ls -la"
+alias pac="sudo pacman"
+
+# disable vim plugins outside of kitty terminal
+if [ $TERM != "xterm-kitty" ]; then
+	alias vim='vim -u NONE'
+fi
+
+# functions
+# test packages 
+export PACS=$HOME/pacs
+pactest() {
+	if [ -n "$1" ]; then
+		pacman -Sp "$1" --print-format '%n' --needed > $PACS/test/"$1".txt
+		cat $PACS/test/"$1".txt
+		echo "created file in pacs/test/. call rmpac file.txt if you dont want it."
+	else
+		echo "please specify which package you want to test install."
+	fi
+}
+
+pacrm() {
+	if [ -n "$1" ]; then
+		sudo pacman -R - < $PACS/test/"$1".txt
+	else
+		echo "please specify which package.txt you want to uninstall."
+	fi
+}
+
+clip() {
+	export DISPLAY=:0
+	"$@" | xclip -sel clip
+}
+
+default_fonts(){
+	for family in serif sans-serif monospace Arial Helvetica Verdana "Times New Roman" "Courier New"; do
+	  echo -n "$family: "
+	  fc-match "$family"
+	done
+}
