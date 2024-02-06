@@ -930,7 +930,7 @@ map ctrl+shift+k send_text all \x1b[75;5u
 
 #: Hide the kitty window from running tasks (⌘+Tab) on macOS.
 
-# macos_quit_when_last_window_closed no
+macos_quit_when_last_window_closed yes
 
 #: Have kitty quit when all the top-level windows are closed. By
 #: default, kitty will stay running, even with no open windows, as is
