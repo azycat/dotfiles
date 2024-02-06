@@ -1,67 +1,3 @@
-#  NOTE(koekeishiya): A list of all built-in modifier and literal keywords can #                     A hotkey is written according to the following rules:
-#
-#                       hotkey       = <mode> '<' <action> | <action>
-#
-#                       mode         = 'name of mode' | <mode> ',' <mode>
-#
-#                       action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
-#                                      <keysym> ':' <command>          | <keysym> '->' ':' <command>
-#                                      <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
-#
-#                       keysym       = <mod> '-' <key> | <key>
-#
-#                       mod          = 'modifier keyword' | <mod> '+' <mod>
-#
-#                       key          = <literal> | <keycode>
-#
-#                       literal      = 'single letter or built-in keyword'
-#
-#                       keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
-#
-#                       proc_map_lst = * <proc_map>
-#
-#                       proc_map     = <string> ':' <command> | <string>     '~' |
-#                                      '*'      ':' <command> | '*'          '~'
-#
-#                       string       = '"' 'sequence of characters' '"'
-#
-#                       command      = command is executed through '$SHELL -c' and
-#                                      follows valid shell syntax. if the $SHELL environment
-#                                      variable is not set, it will default to '/bin/bash'.
-#                                      when bash is used, the ';' delimeter can be specified
-#                                      to chain commands.
-#
-#                                      to allow a command to extend into multiple lines,
-#                                      prepend '\' at the end of the previous line.
-#
-#                                      an EOL character signifies the end of the bind.
-#
-#                       ->           = keypress is not consumed by skhd
-#
-#                       *            = matches every application not specified in <proc_map_lst>
-#
-#                       ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
-#
-#  NOTE(koekeishiya): A mode is declared according to the following rules:
-#
-#                       mode_decl = '::' <name> '@' ':' <command> | '::' <name> ':' <command> |
-#                                   '::' <name> '@'               | '::' <name>
-#
-#                       name      = desired name for this mode,
-#
-#                       @         = capture keypresses regardless of being bound to an action
-#
-#                       command   = command is executed through '$SHELL -c' and
-#                                   follows valid shell syntax. if the $SHELL environment
-#                                   variable is not set, it will default to '/bin/bash'.
-#                                   when bash is used, the ';' delimeter can be specified
-#                                   to chain commands.
-#
-#                                   to allow a command to extend into multiple lines,
-#                                   prepend '\' at the end of the previous line.
-#
-#                                   an EOL character signifies the end of the bind.
-
 # add an on_enter command to the default mode
 # :: default : yabai border::color 0xff775759
 #
@@ -103,13 +39,6 @@ cmd - l [
     "firefox" : skhd -k "cmd - 0x1E"
 ]
 
-# specify a file that should be included as an additional config-file.
-# treated as an absolutepath if the filename begins with '/' otherwise
-# the file is relative to the path of the config-file it was loaded from.
-#
-# .load "/Users/Koe/.config/partial_skhdrc"
-# .load "partial_skhdrc"
-
 # prevent skhd from monitoring events for specific applications.
 #
 # .blacklist [
@@ -147,9 +76,6 @@ cmd + shift - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-ins
 # cmd + shift - m : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance mvim -v /Users/struppi/Library/Mobile\ Documents/com~apple~CloudDocs/struppi-city
 cmd + shift - m : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance nvim /Users/struppi/Library/Mobile\ Documents/com~apple~CloudDocs/struppi-city
 
-# open mccvim in bean counting folder
-# cmd + shift - b : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance mvim -v /Users/struppi/beancount/in
-
 #------------------------------- Window Manager -----------------------------------
 
 # minimize window
@@ -183,17 +109,14 @@ shift + alt - f : yabai -m window --toggle native-fullscreen
 #------------------------------- SPACE Manager -----------------------------------
 
 # change space
-alt - o : yabai -m space --focus next
-alt - i : yabai -m space --focus prev
-# alt - ` : yabai -m space --focus recent
-
-alt - 1 : yabai -m space --focus 1
-alt - 2 : yabai -m space --focus 2
+alt - i : yabai -m space --focus next
+alt - o : yabai -m space --focus prev
+alt - 0x32 : yabai -m space --focus recent
 
 # move window to space and follow focus
-shift + alt - o : yabai -m window --space next;\
+shift + alt - i : yabai -m window --space next;\
                       yabai -m space --focus next
-shift + alt - i : yabai -m window --space prev;\
+shift + alt - o : yabai -m window --space prev;\
                      yabai -m space --focus prev
 
 # balance size of windows
@@ -316,11 +239,34 @@ ctrl + alt - d : yabai -m space --layout float
 # toggle tiled mode (used to force Applications (Books, etc) into tiled mode)
 alt + cmd + ctrl - f : yabai -m window --toggle float 
 
-# experimental: make window gaps 20pt on space 2 -> breaks skhd for some reason
-# yabai -m config --space 2 window_gap 0
+# cycle through all windows sorted by: coordinates -> space index -> display index
+lalt - tab : yabai -m window --focus "$(yabai -m query --windows | jq -re "sort_by(.display, .space, .frame.x, .frame.y, .id) | map(select(.\"is-visible\" == true and .role != \"AXUnknown\")) | reverse | nth(index(map(select(.\"has-focus\" == true))) - 1).id")"
+
+# cycle through all visible windows sorted by: coordinates -> display index
+# yabai -m window --focus "$(yabai -m query --windows | jq -re "sort_by(.display, .frame.x, .frame.y, .id) | map(select(.\"is-visible\" == true and .role != \"AXUnknown\")) | reverse | nth(index(map(select(.\"has-focus\" == true))) - 1).id")"
+
+# Arrow Keys
+fn - h : skhd -k "left"
+fn - j : skhd -k "down"
+fn - k : skhd -k "up"
+fn - l : skhd -k "right"
 
 # restart yabai
 ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
-# close discord hehe
-cmd + alt - m : killall Discord
+# dropdown terminal (aka "quade mode")
+# see additional config in ~/.config/yabai/yabairc
+ctrl - escape : WINDOW_TITLE="ddterm";                                                                                      \
+                WINDOW_ID=$(yabai -m query --windows | jq -e ".[] | select(.title==\"$WINDOW_TITLE\") | .id");              \
+                if [ -z "$WINDOW_ID" ]; then                                                                                \
+                  pgrep -x kitty > /dev/null &&                                                                             \
+                  kitty @ new-window --title "$WINDOW_TITLE" ||                                                             \
+                  open -na /Applications/Kitty.app --args --title "$WINDOW_TITLE";                                          \
+                else                                                                                                        \
+                  DISTANCE=$(yabai -m query --windows --window "$WINDOW_ID" | jq -e '[ .frame.y, .frame.h ] | add');        \
+                  if [ "$DISTANCE" -gt 0 ]; then                                                                            \
+                    yabai -m window "$WINDOW_ID" --move abs:0:-"$DISTANCE" --layer below --focus mouse;                     \
+                  else                                                                                                      \
+                    yabai -m window "$WINDOW_ID" --space mouse --move abs:0:0 --grid "5:5:4:0:1:1" --layer above --focus;  \
+                  fi;                                                                                                       \
+                fi;                                                                                                         \
