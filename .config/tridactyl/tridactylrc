@@ -1,0 +1,193 @@
+" WARNING: This file defines and runs a command called fixamo_quiet. If you
+" also have a malicious addon that operates on `<all_urls>` installed this
+" will allow it to steal your firefox account credentials!
+"
+" With those credentials, an attacker can read anything in your sync account,
+" publish addons to the AMO, etc, etc.
+"
+" Without this command a malicious addon can steal credentials from any site
+" that you visit that is not in the restrictedDomains list.
+"
+" You should comment out the fixamo lines unless you are entirely sure that
+" they are what you want.
+"
+" The advantage of running the command is that you can use the tridactyl
+" interface on addons.mozilla.org and other restricted sites.
+
+
+"""""""""""""""""""""
+"  General Options  "
+"""""""""""""""""""""
+colours dark
+
+" set newtab about:blank
+set editorcmd /usr/local/bin/kitty -1 vim %f
+set smoothscroll false
+set newtabfocus page
+
+set hintfiltermode vimperator-reflow
+set hintuppercase false
+set hintchars neiohtsrad
+set hintdelay 100
+ 
+set searchurls.wb https://web.archive.org/web/*/%s
+command wayback composite get_current_url | tabopen wb
+
+"""""""""""
+"  Binds  "
+"""""""""""
+" Comment toggler for Reddit, Hacker News and Lobste.rs
+bind ;c hint -Jc [class*="expand"],[class*="togg"],[class="comment_folder"]
+ 
+" Git{Hub,Lab} git clone via SSH yank
+bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
+ 
+" As above but execute it and open terminal in folder
+" bind ,g js let uri = document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git"); tri.native.run("cd ~/projects; git clone " + uri + "; cd \"$(basename \"" + uri + "\" .git)\"; st")
+
+" make d take you to the left
+bind d composite tabprev; tabclose #
+bind D tabclose
+ 
+" make t open the selection with tabopen
+bind --mode=visual t composite js document.getSelection().toString() | fillcmdline tabopen
+ 
+" " I like wikiwand but I don't like the way it changes URLs
+" bindurl wikiwand.com yy composite js document.location.href.replace("wikiwand.com/en","wikipedia.org/wiki") | clipboard yank
+ 
+" Make gu take you back to subreddit from comments
+" bindurl reddit.com gu urlparent 4
+ 
+" Only hint search results on Google and DDG
+" bindurl www.google.com f hint -Jc #search a
+" bindurl www.google.com F hint -Jbc #search a
+
+" Make `gi` on GitHub take you to the search box
+bindurl ^https://github.com gi hint -Vc .AppHeader-searchButton
+ 
+
+" Handy multiwindow/multitasking binds
+bind gd tabdetach
+bind gD composite tabduplicate; tabdetach
+ 
+" " Stupid workaround to let hint -; be used with composite which steals semi-colons
+" command hint_focus hint -;
+ 
+" " Open right click menu on links
+" bind ;C composite hint_focus; !s xdotool key Menu
+" 
+" " Binds for new reader mode
+bind gr reader
+bind gR reader --tab
+
+" Suspend / "discard" all tabs - handy for stretching out battery life
+command discardall jsb browser.tabs.query({}).then(ts => browser.tabs.discard(ts.map(t=>t.id)))
+ 
+"" My binds
+
+"bind ` tabsort --url
+
+bind j scrollline 2
+bind k scrollline -1.5
+bind J scrollpage 0.4
+bind K scrollpage -0.4
+
+bind H tabprev
+bind L tabnext
+bind <C-h> back
+bind <C-l> forward
+
+bind O fillcmdline tabopen
+bind go current_url open
+bind gt fillcmdline tab
+bind gT fillcmdline taball
+
+bind b current_url bmark
+bind --mode=normal i focusinput -l
+
+" Commandline
+bind --mode=ex <ArrowRight> ex.insert_completion
+bind --mode=ex <C-d> ex.execute_ex_on_completion_args tabclose
+unbind --mode=ex <C-a>
+unbind --mode=ex <C-c>
+
+" Tricks
+bind <space>h hint -F e => e.dispatchEvent(new MouseEvent('mouseover', {}))
+" Protonmail hints
+bindurl https://mail.protonmail.com/ f hint -Jc .item-subject,.item-checkbox,.navigation-link,.toolbar-button
+autocmd DocStart .*github\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
+autocmd DocStart .*gitlab\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
+autocmd DocStart .*archlinux\.org.* zoom 150 false TRI_FIRED_MOZ_TABID
+
+setpref browser.pocket.enabled false
+setpref extensions.pocket.enabled false
+setpref toolkit.legacyUserProfileCustomizations.stylesheets true
+setpref browser.tabs.closeWindowWithLastTab false
+
+"""""""""""""""
+"  Redirects  "
+"""""""""""""""
+
+
+" Redirect to old style arch wiki
+" Note that the seperator match needs to get to js as \?  which means escaping the \ in the rc file
+autocmd BeforeRequest https://wiki.archlinux.org/* (e)=>{\
+	if ( e.type == "main_frame" && null == e.url.match("[?|&]useskinversion=") ){\
+		let seperator= e.url.match("\\?")!=null ? "&" : "?" ;\
+		return {redirectUrl: e.url + seperator + "useskinversion=1"};\
+	} return {}\
+}
+
+" Redirect medium articlues to a paywall alternative
+command mediumredirect autocmd BeforeRequest *://medium.com/* (e)=>{\
+	if ( e.type == "main_frame" && null == e.url.match("[?|&]noredirect=1") ){\
+		return {redirectUrl: e.url.replace("medium.com", "scribe.rip")};\
+	} return {}\
+}
+command stopmediumredirect autocmddelete BeforeRequest *://medium.com/*
+mediumredirect
+
+" New reddit is bad
+" autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
+
+" " Misc settings
+" "
+" 
+" " set editorcmd to suckless terminal, or use the defaults on other platforms
+" js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="linux" ? "st vim" : "auto"; tri.config.set("editorcmd", editorcmd)})
+ 
+" " The following modification allows Tridactyl to function on more pages, e.g. raw GitHub pages.
+" " You may not wish to run this. Mozilla strongly feels that you shouldn't.
+" " Read https://wiki.mozilla.org/Security/CSP#Goals for more information.
+" "
+" " Equivalent to `set csp clobber` before it was removed.
+" " This weakens your defences against cross-site-scripting attacks
+" " and other types of code-injection by reducing the strictness 
+" " of Content Security Policy on all sites in a couple of ways.
+" " 
+" " We remove the sandbox directive
+" " https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox
+" " which allows our iframe (and anyone else's) to run on any website.
+" "
+" " We weaken the style-src directive
+" " https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src
+" " to allow us to theme our elements.
+" " This exposes you to 'cross site styling' attacks
+jsb browser.webRequest.onHeadersReceived.addListener(tri.request.clobberCSP,{urls:["<all_urls>"],types:["main_frame"]},["blocking","responseHeaders"])
+
+" Inject Google Translate
+" This (clearly) is remotely hosted code. Google will be sent the whole
+" contents of the page you are on if you run `:translate`
+" From https://github.com/jeremiahlee/page-translator
+command translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
+ 
+" "
+" " URL redirects
+" "
+ 
+" " Isolate Facebook in its own container
+" " set auconcreatecontainer true
+" " autocontain facebook\.com facebook
+" 
+" " For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
+" " vim: set filetype=tridactyl
