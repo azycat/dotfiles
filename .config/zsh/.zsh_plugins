@@ -1,0 +1,45 @@
+#########
+## PLUGINS
+#########
+
+ZPLUGS=~/.config/zsh/plugins
+
+##############
+## utility
+##############
+
+# vim-ctrl-z: switch between vim and terminal wth ctrl-z
+source $ZPLUGS/vim-ctrl-z.zsh
+
+##############
+## completions
+##############
+
+# ### fzf-tab 
+# source $ZDOTDIR/plugins/fzf-tab/fzf-tab.plugin.zsh # needs to be before autosuggestions
+
+# # # ### fzf tab settings
+# # disable sort when completing `git checkout`
+# zstyle ':completion:*:git-checkout:*' sort false
+# # set descriptions format to enable group support
+# zstyle ':completion:*:descriptions' format '[%d]'
+# # set list-colors to enable filename colorizing
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# ## preview directory's content with ls when completing cd
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+# # switch group using `,` and `.`
+# zstyle ':fzf-tab:*' switch-group ',' '.'
+# # always use continuous-trigger
+# zstyle ':fzf-tab:*cd*' continuous-trigger 'enter'
+# # disable for zoxide
+# zstyle ':fzf-tab:complete:z:*' disabled-on any
+# zstyle ':fzf-tab:complete:zi:*' disabled-on any
+
+# zsh-autosuggestions
+# source $ZPLUGS/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-interactive-cd
+# source $ZDOTDIR/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
+
+# syntax highlight (must be last)
+source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

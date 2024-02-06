@@ -1,0 +1,36 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=$ZDOTDIR/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+# End of lines configured by zsh-newuser-install
+#
+# ~/.bashrc
+#
+#
+# config files
+alias sxhkdrc='vim ~/.config/sxhkd/sxhkdrc'
+alias bspwmrc='vim ~/.config/bspwm/bspwmrc'
+alias zshrc='vim ~/.config/zsh/.zshrc'
+alias zsource='source ~/.config/zsh/.zshrc;echo "zshrc sourced."'
+alias bashrc='vim ~/.bashrc'
+alias doc='vim ~/arch.md'
+alias icat='kitty +kitten icat'
+
+# zsh prompt
+autoload -Uz vcs_info compinit
+precmd() { vcs_info }
+
+zstyle ':vcs_info:git:*' formats '%b '
+
+setopt PROMPT_SUBST
+PROMPT='%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+
+## clipboard
+alias pbcopy="xclip -selection clipboard"
+
+## application paths
+eval "$(zoxide init zsh)"
+
+export GEM_HOME="$(gem env user_gemhome)"
+export PATH="$PATH:$GEM_HOME/bin"
+
