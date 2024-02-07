@@ -54,13 +54,7 @@ set statusline="%t %A %20s %= %-30d %a"
 
 " :mark mark /full/directory/path [filename]
 
-mark b ~/.local/bin/
-mark h ~/
-mark d ~/Downloads/
-mark c ~/.config/
-mark 5 ~/53chan/
-mark s ~/53chan/screenies/
-mark n ~/53chan/notebook
+source ~/.config/vifm/marks.vifm
 
 " ------------------------------------------------------------------------------
 " Commands
