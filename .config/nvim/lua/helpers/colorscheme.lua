@@ -22,7 +22,8 @@ end
 -- local colorscheme = get_if_available('rose-pine')
 -- local colorscheme = get_if_available("github_light_tritanopia")
 -- local colorscheme = get_if_available("randombones")
-local colorscheme = get_if_available("everforest", { background = "hard" })
+-- local colorscheme = get_if_available("everforest", { background = "hard" })
+local colorscheme = get_if_available("kanagawa", { theme = "dragon" })
 -- local colorscheme = get_if_available('melange')
 
 return colorscheme

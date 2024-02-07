@@ -14,6 +14,8 @@ return {
 
 	"savq/melange-nvim",
 
-	"mcchrish/zenbones.nvim",
-	"projekt0n/github-nvim-theme",
+	-- "mcchrish/zenbones.nvim",
+	-- "projekt0n/github-nvim-theme",
+
+	"rebelot/kanagawa.nvim"
 }

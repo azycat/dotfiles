@@ -8,6 +8,10 @@ local opts = {
 	number = true,
 	relativenumber = true,
 	undofile = true,
+	-- statusline
+	showcmd = false,
+	ruler = false,
+	showmode = false
 }
 
 -- Set options from table
