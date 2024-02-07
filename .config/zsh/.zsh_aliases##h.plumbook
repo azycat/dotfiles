@@ -1,0 +1,42 @@
+## util
+alias :q="exit"
+alias xcd='cd "$(xplr --print-pwd-as-result)"'
+alias yl='lazygit --use-config-file "$HOME/.config/yadm/lazygit.yml,$HOME/.config/lazygit/config.yml" --work-tree ~ --git-dir ~/.local/share/yadm/repo.git'
+
+## config
+alias zsource="source $ZDOTDIR/.zshrc"
+alias zshrc="nvim $ZDOTDIR/.zshrc"
+alias zalias="nvim $ZDOTDIR/.zsh_aliases"
+alias yabairc="nvim  ~/.config/yabai/yabairc"
+alias skhdrc="nvim ~/.config/skhd/skhdrc"
+
+## shortcuts
+export CITY="~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/struppi-city"
+alias icloud="cd ~Library/Mobile\ Documents/com~apple~CloudDocs"
+alias struppi-city="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/struppi-city"
+alias notebook="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/notebook"
+alias silly="cd ~/ai-no-koto-sa/SillyTavern/ && ./start.sh"
+alias slaude="cd ~/ai-no-koto-sa/slaude && ./start.sh"
+alias rm=gomi
+
+
+# cd to Finder
+cdf() {
+    target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
+    if [ "$target" != "" ]; then
+        cd "$target"; pwd
+    else
+        echo 'No Finder window found' >&2
+    fi
+}
+
+# Update sha256 hash for scripting edition
+function suyabai () {
+    SHA256=$(shasum -a 256 $(which yabai) | awk "{print \$1;}")
+    if [ -f "/private/etc/sudoers.d/yabai" ]; then
+        sudo sed -i '' -e 's/sha256:[[:alnum:]]*/sha256:'${SHA256}'/' /private/etc/sudoers.d/yabai
+        echo "sudoers > yabai > sha256 hash added"
+    else
+        echo "sudoers file does not exist yet"
+    fi
+}

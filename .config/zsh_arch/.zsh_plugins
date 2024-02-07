@@ -9,7 +9,7 @@ ZPLUGS=~/.config/zsh/plugins
 ##############
 
 # vim-ctrl-z: switch between vim and terminal wth ctrl-z
-source $ZPLUGS/vim-ctrl-z/vim-ctrl-z.plugin.zsh
+source $ZPLUGS/vim-ctrl-z.zsh
 
 ##############
 ## completions
