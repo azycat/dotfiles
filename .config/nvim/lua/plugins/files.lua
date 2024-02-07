@@ -11,7 +11,7 @@ return {
 				if not MiniFiles.close() then
 					local buf_path = vim.api.nvim_buf_get_name(0)
 					local cwd = vim.fn.getcwd()
-					if buf_path == "/home/azy/Starter" then
+					if string.find(buf_path, "/Starter") then
 						MiniFiles.open(cwd)
 					else
 						MiniFiles.open(buf_path)

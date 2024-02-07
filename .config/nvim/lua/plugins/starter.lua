@@ -26,7 +26,7 @@ local plugin = {
 			evaluate_single = true,
 			footer = os.date(),
 			header = h2,
-			query_updaters = [[abcdefghilmopqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
+			query_updaters = [[abcdefghimopqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
 			items = {
 				starter.sections.recent_files(5, false, false),
 				{
@@ -39,8 +39,8 @@ local plugin = {
 					name = "o] neorg",
 					section = "Builtin actions",
 				},
-				{ action = "enew | startinsert", name = "e] new buffer", section = "Builtin actions" },
-				{ action = "qall!", name = "q] quit neovim", section = "Builtin actions" },
+				{ action = "enew | startinsert", name = "e] new buffer",  section = "Builtin actions" },
+				{ action = "qall!",              name = "q] quit neovim", section = "Builtin actions" },
 			},
 			content_hooks = {
 				-- add padding between section header and content
@@ -117,12 +117,13 @@ local plugin = {
 				starter.gen_hook.aligning("center", "center"),
 				-- starter.gen_hook.
 			},
-			-- allow j/k navigation
+			-- allow jkl navigation
 			vim.cmd([[
     augroup MiniStarterJK
         au!
         au User MiniStarterOpened nmap <buffer> j <Cmd>lua MiniStarter.update_current_item('next')<CR>
         au User MiniStarterOpened nmap <buffer> k <Cmd>lua MiniStarter.update_current_item('prev')<CR>
+        au User MiniStarterOpened nmap <buffer> l <Cmd>lua MiniStarter.eval_current_item()<CR>
         au User MiniStarterOpened nmap <buffer> <C-p> <Cmd>Telescope find_files<CR>
         au User MiniStarterOpened nmap <buffer> <C-n> <Cmd>Telescope file_browser<CR>
     augroup END
@@ -163,22 +164,3 @@ local plugin = {
 }
 
 return plugin
-
--- failed content hook im keeping for posterity
--- add a bullet for the unique prefix of each recent file
--- nvm cant hook onto content because the nprefix isn't generated yet :C
--- function(content)
---   local e_os = '] '
---   local sections = { 'Notebook' }
---   local item_coords = starter.content_coords(content, 'item')
---
---   for _, c in ipairs(item_coords) do
---     local unit = content[c.line][c.unit]
---     local item = unit.item
---
---     if vim.tbl_contains(sections, item.section) then
---       unit.string = ('%s%s %s'):format(item._nprefix, e_os, unit.string)
---     end
---   end
---   return content
--- end,
