@@ -7,6 +7,7 @@ source $ZDOTDIR/init.zsh
 
 # application paths
 export KITTY_CONFIG_DIRECTORY="$HOME/.config/kitty"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # brew plugins
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
