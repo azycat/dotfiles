@@ -7,4 +7,4 @@ WIFI=${INFO:-"Searching..."}
 
 # sketchybar --set $NAME label="${WIFI}"
 
-sketchybar --set $NAME label="٩(◕‿◕｡)۶"
+# sketchybar --set $NAME label="٩(◕‿◕｡)۶"
