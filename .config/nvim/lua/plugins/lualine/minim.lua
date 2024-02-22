@@ -26,7 +26,7 @@ local custom_icons = {
     modified_simple = "~ ",
     removed = " ",
     lock = "[-]",
-    touched = "[+]"
+    touched = "[*]"
 }
 
 local get_ftype_icon = function()

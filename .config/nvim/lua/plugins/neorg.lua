@@ -1,4 +1,10 @@
-local CITY = os.getenv("CITY")
+local function get_notebook()
+	if vim.fn.has('macunix') then
+		return "~/Documents/vault/struppi-city"
+	else -- i only have two computers lol
+		return "~/53chan/struppi-city"
+	end
+end
 
 return {
 	{
@@ -20,7 +26,7 @@ return {
 					["core.dirman"] = { -- Manages Neorg workspaces
 						config = {
 							workspaces = {
-								notes = CITY .. "/etc/neorg",
+								notes = get_notebook() .. "/etc/neorg",
 							},
 						},
 					},

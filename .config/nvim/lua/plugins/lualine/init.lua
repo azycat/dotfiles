@@ -9,5 +9,4 @@ return {
 	opts = function()
 		return require("plugins.lualine.minim")
 	end
-
 }
