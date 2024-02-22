@@ -20,8 +20,8 @@ set wildstyle=bar "	Display compeletions in popup
 
 " What should be saved automatically on restarting vifm.  Drop "savedirs"
 " value if you don't want vifm to remember last visited directories for you.
-set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
-            \phistory,fhistory,dirstack,registers,bookmarks,bmarks
+set vifminfo=dhistory,chistory,state,tui,shistory,
+           \phistory,fhistory,dirstack,registers,bookmarks,bmarks
 
 " set format of file modification time
 set timefmt='%b %d, %Y @ %H:%M'
