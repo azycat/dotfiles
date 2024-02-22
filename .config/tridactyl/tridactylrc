@@ -21,7 +21,7 @@
 colours dark
 
 set newtab https://alexw00.github.io/StartTreeV2/html/v.html?t=~(s~(n~%27search~u~%27https*3a*2f*2fwww.google.com*2fsearch*3fq*3d)~v~%270.0~bmc~(~(~(cn~%27general~b~(~(n~%27*2fg*2f~u~%27https*3a*2f*2fboards.4chan.org*2fg*2f)~(n~%27*2fzzz*2f~u~%27https*3a*2f*2fboards.4chan.org*2fvp*2fcatalog*23s*3dzzz)~(n~%27scheduler~u~%27https*3a*2f*2fcbh.bookedscheduler.com*2fWeb*2findex.php*3fredirect*3d))))~(~(cn~%27neopets~b~(~(n~%27dailies~u~%27https*3a*2f*2fwww.jellyneo.net*2f*3fgo*3ddailies)~(n~%27fc~u~%27https*3a*2f*2fwww.reddit.com*2fr*2fneopets*2f*3ff*3dflair_name*253A*2522Food*2520Club*2522)~(n~%27lab~u~%27https*3a*2f*2fwww.neopets.com*2flab2.phtml)))))~t~(nr~5))
-set editorcmd /usr/local/bin/kitty --title "ddterm" -- vim %f '+normal!%lGzv%c|'
+set editorcmd /usr/local/bin/kitty --title "ddterm" -- nvim %f '+normal!%lGzv%c|'
 set smoothscroll false
 set allowautofocus false
 " set newtabfocus page
@@ -114,8 +114,8 @@ bind --mode=normal i focusinput -l
 " Commandline
 bind --mode=ex <ArrowRight> ex.insert_completion
 bind --mode=ex <C-d> ex.execute_ex_on_completion_args tabclose
-bind --mode=ex <C-p> ex.prev_completion
-bind --mode=ex <C-n> ex.next_completion
+bind --mode=ex <C-k> ex.prev_completion
+bind --mode=ex <C-j> ex.next_completion
 unbind --mode=ex <C-a>
 unbind --mode=ex <C-c>
 
@@ -148,7 +148,7 @@ bind q mouseleaveall
 " Protonmail hints
 bindurl https://mail.protonmail.com/ f hint -Jc .item-subject,.item-checkbox,.navigation-link,.toolbar-button
 
-autocmd DocStart .*alexw00.github\.io.* zoom 80 false TRI_FIRED_MOZ_TABID
+autocmd DocStart .*alexw00.github\.io.* zoom 90 false TRI_FIRED_MOZ_TABID
 " autocmd DocStart .*github\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
 " autocmd DocStart .*gitlab\.com.* zoom 150 false TRI_FIRED_MOZ_TABID
 " autocmd DocStart .*archlinux\.org.* zoom 150 false TRI_FIRED_MOZ_TABID
