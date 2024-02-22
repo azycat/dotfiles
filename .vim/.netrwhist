@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/azy/.local/share/applications'
+let g:netrw_dirhist_4='/home/azy/.config/mpv'
+let g:netrw_dirhist_3='/home/azy/.local/bin'
+let g:netrw_dirhist_2='/home/azy/.local/share/applications'
+let g:netrw_dirhist_1='/home/azy/repos/notebook/.obsidian'
+let g:netrw_dirhist_0='/home/azy/repos/notebook'
+let g:netrw_dirhist_9='/home/azy/.local/bin'
+let g:netrw_dirhist_8='/home/azy/.config/StartTree'
+let g:netrw_dirhist_7='/home/azy/.local/bin'
+let g:netrw_dirhist_6='/home/azy/.purple/plugins'
