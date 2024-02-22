@@ -27,6 +27,10 @@ cmd - k [
     "firefox"       : skhd -k "f6" # firefox navbar 
 ]
 
+cmd + shift - f [
+    "firefox"     : skhd -k "f"
+]
+
 cmd -b [
     "firefox"       : skhd -k "shift + ctrl - e"
 ]
@@ -42,9 +46,6 @@ cmd - l [
 # prevent skhd from monitoring events for specific applications.
 #
 # .blacklist [
-#    "kitty"
-#    "terminal"
-#    "vivaldi"
 # ]
 
 # cmd - h [
@@ -67,17 +68,13 @@ cmd + shift - 0 : open -a 'Messenger'
 # open reminders
 cmd + shift - r : open -a 'Reminders' .
 
-# open browser (don't really use this anymore)
+# open neovim
 cmd + shift - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance /usr/local/bin/nvim
-# cmd + shift - return : open -na 'Firefox'
 
-# cmd + shift - return : open -na /Applications/qutebrowser.app
-# cmd + shift - return : open -na /Applications/Vivaldi.app
-
-# open macvim in cloud notes folder
+# open struppi-city
 # cmd + shift - m : /Applications/MacVim.app/Contents/MacOS/MacVim /Users/struppi/Library/Mobile\ Documents/com~apple~CloudDocs/struppi-city
 # cmd + shift - m : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance mvim -v /Users/struppi/Library/Mobile\ Documents/com~apple~CloudDocs/struppi-city
-cmd + shift - m : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance nvim /Users/struppi/Library/Mobile\ Documents/com~apple~CloudDocs/struppi-city
+# cmd + shift - m : open /Applications/struppi-city.url
 
 #------------------------------- Window Manager -----------------------------------
 
@@ -107,7 +104,7 @@ alt - d : yabai -m window --toggle zoom-parent
 alt - f : yabai -m window --toggle zoom-fullscreen
 
 # toggle window native fullscreen
-shift + alt - f : yabai -m window --toggle native-fullscreen
+# shift + alt - f : yabai -m window --toggle native-fullscreen
 
 #------------------------------- SPACE Manager -----------------------------------
 
@@ -173,10 +170,10 @@ shift + alt - k : yabai -m window --swap north
 shift + alt - l : yabai -m window --swap east
 
 # Move window.
-shift + cmd - h : yabai -m window --warp west
-shift + cmd - j : yabai -m window --warp south
-shift + cmd - k : yabai -m window --warp north
-shift + cmd - l : yabai -m window --warp east
+# shift + cmd - h : yabai -m window --warp west
+# shift + cmd - j : yabai -m window --warp south
+# shift + cmd - k : yabai -m window --warp north
+# shift + cmd - l : yabai -m window --warp east
 
 # send window to a space 
 shift + alt - 1 : yabai -m window --space 1;\
@@ -255,6 +252,9 @@ fn - h : skhd -k "left"
 fn - j : skhd -k "down"
 fn - k : skhd -k "up"
 fn - l : skhd -k "right"
+
+ctrl - p : skhd -k "up"
+ctrl - n : skhd -k "down"
 
 # restart yabai
 ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"

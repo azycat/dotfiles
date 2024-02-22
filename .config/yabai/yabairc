@@ -61,6 +61,7 @@ echo "yabai configuration loaded.. :3"
 # ignore stickies
 yabai -m rule --add app="Stickies" manage=off
 yabai -m rule --add app="Reminders" manage=off
+yabai -m rule --add app="Homerow" manage=off
 yabai -m rule --add app="Messenger" manage=off
 yabai -m rule --add app="Calculator" manage=off
 yabai -m rule --add app="Bitwarden" manage=off
@@ -84,7 +85,7 @@ yabai -m rule --add title="ddterm" manage=off grid="5:5:2:2:1:1"
 # unmanaged apps
 systemApp='^(System Settings|System Information|Calendar|Mail|App Store|Activity Monitor|Dictionary)$'
 
-manageOffApp='^(IINA|Stats|LICEcap)$'
+manageOffApp='^(Photos|IINA|Stats|LICEcap)$'
 
 yabai -m rule --add app="${systemApp}|${manageOffApp}" manage=off
 
