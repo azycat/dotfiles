@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export LANG=C
+
+if [[ ! $1 || $1 == -h || $1 == --help ]]; then
+    echo -e "Usage:\n\n\t$0 '[path/]Azy'"
+    exit 1
+fi
+
+files=(
+    $(file 2>/dev/null /proc/*/fd/* |
+        grep "(deleted)'$" | 
+        sed -r 's@(:.*broken\s+symbolic\s+link\s+to\s+.|\(deleted\).$)@ @g' |
+        grep "$1" |
+        cut -d' ' -f1
+    )
+)
+
+if [[ ${files[@]} ]]; then
+    for f in ${files[@]}; do
+        echo "fd $f match... Try to copy this fd to another place quickly!"
+    done
+else
+    echo >&2 "No matching fd found..."
+    exit 2
+fi

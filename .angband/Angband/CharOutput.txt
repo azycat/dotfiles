@@ -1,0 +1,9 @@
+{
+race: "Half-Troll",
+class: "Priest",
+mapName: "Angband",
+dLvl: "38",
+cLvl: "37",
+isDead: "1",
+killedBy: "an ancient green dragon"
+}
