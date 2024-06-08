@@ -1,0 +1,212 @@
+# applications that need to be at the top of the file for some reason
+super + y
+	~/.local/bin/bwmenu
+
+super + alt + f
+	~/.local/bin/flux
+
+super + alt + b
+	rofi-bluetooth 
+
+#
+#((( BSPWM HOTKEYS
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# close and kill
+super + {_,shift + alt + }w
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + v
+	bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+# super + y
+#	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest window
+super + m
+	bspc node -s biggest.window
+
+# rotate the tree
+super + {_,shift + }r
+	bspc node @/ -R {-90, 90}
+
+#
+# state/flags
+#
+
+# set the window state
+super + shift + {t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating}
+
+# pop out the guy
+super + t
+	bspc node -t -floating
+
+super + shift + p
+  bspc node focused -t pseudo_tiled
+
+# toggle fullscreen
+super + f
+	bspc node -t \~fullscreen
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+# balance split ratios of the tree
+# super + b
+# 	bspc node @/ -B
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {p,b,comma,period}
+	bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous desktop
+super + {o,i}
+	bspc desktop -f {prev,next}.local
+
+# send to next/previous desktop
+super + shift + {i,o}
+	bspc node -d {prev,next}.local --follow
+
+# focus the last node/desktop
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+# send to last node/desktop
+super + shift + grave
+	bspc node -d last.local --follow
+
+# focus the older or newer node in the focus history
+# super + {o,i}
+# 	bspc wm -h off; \
+# 	bspc node {older,newer} -f; \
+# 	bspc wm -h on
+
+# focus and optionally send to the given desktop
+super + {_,shift + }{1-3,8-9,0}
+	bspc {desktop -f, node -d} '^{1-3,4-5,6}' --follow
+
+# Expand/contract a window by moving one of its side outward/inward
+super + s : {h,j,k,l}
+    STEP=20; SELECTION={1,2,3,4}; \
+    bspc node -z $(echo "left -$STEP 0,bottom 0 $STEP,top 0 -$STEP,right $STEP 0" | cut -d',' -f$SELECTION) || \
+    bspc node -z $(echo "right -$STEP 0,top 0 $STEP,bottom 0 -$STEP,left $STEP 0" | cut -d',' -f$SELECTION)
+
+# Equalize window gaps
+super + a
+    bspc query -N -d | xargs -I % bspc node % -B
+
+# change inner gaps
+super + {_, shift +} g
+    { bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) + 10 )), \
+    [ $(bspc config -d focused window_gap) -ge 10 ] && \
+    bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) - 10 )) }
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# resize windows
+super + alt + {Left,Down,Up,Right}
+    {bspc node @parent/second -z left -50 0; \
+    bspc node @parent/first -z right -50 0, \
+    bspc node @parent/second -z top 0 +20; \
+    bspc node @parent/first -z bottom 0 +20, \
+    bspc node @parent/first -z bottom 0 -20; \
+    bspc node @parent/second -z top 0 -20, \
+    bspc node @parent/first -z right +20 0; \
+    bspc node @parent/second -z left +20 0}
+
+# move a floating window
+super + alt + {h,j,k,l}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# focus a floating window / cycle floating windows
+super + {_,shift + }g
+	bspc node 'focused.floating#{next,prev}.local.!hidden.floating' -f \
+	    || bspc node 'last.local.!focused.!hidden.floating' -f \
+	    || bspc node  'any.local.!focused.!hidden.floating' -f
+
+#
+#((( WM INDEPENDENT HOTKEYS
+#
+
+wpctl = "/usr/bin/wpctl"
+set-volume = "/usr/bin/set-volume"
+
+# audio controls
+XF86AudioRaiseVolume; @XF86AudioRaiseVolume
+	set-volume 5%+
+	# wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+
+XF86AudioLowerVolume; @XF86AudioLowerVolume
+	set-volume 5%-
+	# wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+
+XF86AudioMute; @XF86AudioMute
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+# terminal emulator
+super + {_, shift +} Return
+	{~/.local/bin/kitty-run, kitty}
+
+
+# Screenshot
+# @Print
+# 	export FILE="$HOME/53chan/screenies/$(date +%Y%m%d-%T).png"; maim -l -c 1,0.32,0,0.3 --hidecursor -s $FILE; xclip -selection clipboard -t image/png $FILE; dunstify 'Screenshot copied to clipboard'
+
+@Print 
+	maim -l -c 1,0.32,0,0.3 --hidecursor -s | xclip -selection clipboard -t image/png; dunstify 'Full screenshot copied to clipboard'
+
+ctrl + @Print 
+	maim | xclip -selection clipboard -t image/png; dunstify 'Selected screenshot copied to clipboard'
+
+shift + @Print
+	export FILE="$HOME/53chan/screenies/$(date +%Y%m%d-%T).png"; maim -l -c 1,0.32,0,0.3 --hidecursor -s $FILE; xclip -selection clipboard -t image/png $FILE; dunstify 'Screenshot saved to files'
+
+ctrl + shift + @Print
+	export FILE="$HOME/53chan/screenies/$(date +%Y%m%d-%T).png"; maim $FILE; xclip -selection clipboard -t image/png $FILE; dunstify 'Screenshot saved to files'
+
+# program launcher
+super + @space
+	rofi -show drun -font 'DejaVu Sans Mono 9'
+	# ~/.local/bin/bsp-openhere $(for i in $(echo $PATH | tr ":" "\n"); do ls -1 $i; done | rofi -show drun 'DejaVu Sans Mono 9')
+	
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
